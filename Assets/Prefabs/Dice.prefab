@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3479166014617844416}
   - component: {fileID: 1954999080068598262}
+  - component: {fileID: 4542688248833843440}
   m_Layer: 0
   m_Name: Selecting_dice
   m_TagString: Untagged
@@ -69,7 +70,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: c760b438e021d1e4d990cdab851d0f8e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -81,6 +82,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4542688248833843440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829783596458639026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d273a5e829c0064898c91cfb778e794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2353528330869858760
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,6 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7724993003343122311}
   - component: {fileID: 6605625163240177930}
+  - component: {fileID: 2650784080137241698}
   m_Layer: 0
   m_Name: Selected_dice
   m_TagString: Untagged
@@ -162,6 +176,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2650784080137241698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2353528330869858760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d273a5e829c0064898c91cfb778e794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4940856437624214397
 GameObject:
   m_ObjectHideFlags: 0

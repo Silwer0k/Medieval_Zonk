@@ -6,6 +6,7 @@ public class DiceSelecting : MonoBehaviour
 {
     [SerializeField] private Transform[] _heap;
 
+    private List<Dice> _combinationOfDices = new List<Dice>();
     private Transform _currentSelectedDice;
     private int _currentSelectedDiceIndex;
 
@@ -22,6 +23,24 @@ public class DiceSelecting : MonoBehaviour
             SelectNextDice(true);
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
             SelectNextDice(false);
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return))
+            ChangeDiceCombination();
+    }
+
+    private void ChangeDiceCombination()
+    {
+        var CombinationCircleRenderer = _currentSelectedDice.GetChild(0).GetComponent<SpriteRenderer>();
+        if (!CombinationCircleRenderer.enabled)
+        {
+            //add to list
+            _combinationOfDices.Add(_currentSelectedDice.GetComponent<Dice>());
+        }
+        else
+        {
+            //remove from list
+            _combinationOfDices.Remove(_currentSelectedDice.GetComponent<Dice>());
+        }
+        CombinationCircleRenderer.enabled = !CombinationCircleRenderer.enabled;
     }
 
     private void SelectNextDice(bool up)
