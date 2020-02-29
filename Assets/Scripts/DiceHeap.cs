@@ -25,10 +25,16 @@ public class DiceHeap : MonoBehaviour
     {
         foreach (var dice in _heap)
         {
+            SetDiceRandomRotation(dice);
             SetDiceRandomPositionInHeap(dice);
             dice.Roll();
         }
         _verifiedPositions.Clear();
+    }
+
+    private void SetDiceRandomRotation(Dice dice)
+    {
+        dice.transform.Rotate(0f, 0f, Random.Range(0f, 360f));
     }
 
     private void SetDiceRandomPositionInHeap(Dice dice)
@@ -43,6 +49,7 @@ public class DiceHeap : MonoBehaviour
         {
             for (int i = 0; i < _verifiedPositions.Count; i++)
             {
+                //заменить _minDistanceBeetweenDices на размер спрайта
                 while (Vector2.Distance(_verifiedPositions[i], randomPosition) < _minDistanceBeetweenDices)
                 {
                     randomPosition = GetRandomPositionInCircle();
