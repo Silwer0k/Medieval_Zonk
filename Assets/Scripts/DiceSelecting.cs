@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class DiceSelecting : MonoBehaviour
 {
+    [SerializeField] private Combinations _possibleCombinations;
     [SerializeField] private Transform[] _heap;
 
-    private List<Dice> _combinationOfDices = new List<Dice>();
+    private List<Dice> _selectedDices = new List<Dice>();
     private Transform _currentSelectedDice;
     private int _currentSelectedDiceIndex;
 
@@ -33,14 +34,16 @@ public class DiceSelecting : MonoBehaviour
         if (!CombinationCircleRenderer.enabled)
         {
             //add to list
-            _combinationOfDices.Add(_currentSelectedDice.GetComponent<Dice>());
+            _selectedDices.Add(_currentSelectedDice.GetComponent<Dice>());
         }
         else
         {
             //remove from list
-            _combinationOfDices.Remove(_currentSelectedDice.GetComponent<Dice>());
+            _selectedDices.Remove(_currentSelectedDice.GetComponent<Dice>());
         }
         CombinationCircleRenderer.enabled = !CombinationCircleRenderer.enabled;
+        //проверка комбинации
+        _possibleCombinations.CheckCombination(_selectedDices);
     }
 
     private void SelectNextDice(bool up)

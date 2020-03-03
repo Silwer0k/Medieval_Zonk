@@ -10,6 +10,12 @@ public class Dice : MonoBehaviour
 	}
 	[SerializeField] private DiceRender _diceRender;
 	[SerializeField] private DiceState _currentState = DiceState.One;
+	public DiceState CurrentState { 
+		get
+		{
+			return _currentState;
+		}
+	}
 
 	private void Start()
 	{
