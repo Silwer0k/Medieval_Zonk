@@ -43,7 +43,7 @@ public class DiceSelecting : MonoBehaviour
         }
         CombinationCircleRenderer.enabled = !CombinationCircleRenderer.enabled;
         //проверка комбинации
-        _possibleCombinations.CheckCombination(_selectedDices);
+        _possibleCombinations.CheckCombinations(_selectedDices);
     }
 
     private void SelectNextDice(bool up)

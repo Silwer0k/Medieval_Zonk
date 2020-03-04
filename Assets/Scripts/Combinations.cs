@@ -5,64 +5,69 @@ using UnityEngine;
 
 public class Combinations : MonoBehaviour
 {
-    [SerializeField] private Dictionary<string, int> _listOfCombinations;
-
-    private int points;
-
-    private void Start()
+    [SerializeField] private int _points;
+    public void CheckCombinations(List<Dice> dices)
     {
-        points = 0;
-        _listOfCombinations = new Dictionary<string, int>();        
-        _listOfCombinations.Add("6*6*6*", 600);
-        _listOfCombinations.Add("5*5*5*", 500);
-        _listOfCombinations.Add("4*4*4*", 400);
-        _listOfCombinations.Add("3*3*3*", 300);
-        _listOfCombinations.Add("2*2*2*", 200);
-        _listOfCombinations.Add("1*1*1*", 1000);
-        _listOfCombinations.Add("5*", 50);
-        _listOfCombinations.Add("1*", 100);
-    }
+        _points = 0;
+        int[] countsOfEachDiceState = CountEachDiceState(dices);
 
-    public void CheckCombination(List<Dice> dices)
-    {
-        if (dices == null || dices.Count == 0)
-            return;
-        string combinationString = ParseToString(dices);
-        Debug.Log(combinationString);
-        foreach (var combination in _listOfCombinations)
+        int threePairStatus = 0;
+        int streetStatus = 0;
+        int fullHouseStatus = 0;
+        for (int i = 0; i < countsOfEachDiceState.Length; i++)
         {
-            while (combinationString.Contains(combination.Key))
+            if(countsOfEachDiceState[i] <= 2)
             {
-                combinationString = ReplaceFirst(combinationString, combination.Key, "");
-                Debug.Log(combinationString);
-                points += _listOfCombinations[combination.Key];
+                switch (i)
+                {
+                    case 0:
+                        _points += 100 * countsOfEachDiceState[i];
+                        break;
+                    case 4:
+                        _points += 50 * countsOfEachDiceState[i];
+                        break;
+                    default:
+                        break;
+                }
+            }else
+            {
+                var multiplier = (i == 0) ? 1000 : 100;
+                _points += (i + 1) * multiplier + ((i + 1) * multiplier) * (countsOfEachDiceState[i] - 3);
+            }
+
+            if (countsOfEachDiceState.Length == 6)
+            {
+                threePairStatus = (countsOfEachDiceState[i] == 2) ? ++threePairStatus : threePairStatus + 0;
+                streetStatus = (countsOfEachDiceState[i] == 1) ? ++streetStatus : streetStatus + 0;
+                fullHouseStatus = (countsOfEachDiceState[i] == 4) ? ++fullHouseStatus : (countsOfEachDiceState[i] == 2) ? ++fullHouseStatus : fullHouseStatus + 0;
+            }
+            if (threePairStatus == 3)
+            {
+                _points = 750;
+                //extra roll
+            }
+            if (streetStatus == 6)
+            {
+                _points = 1500;
+                //extra roll
+            }
+            if (fullHouseStatus == 2)
+            {
+                _points = 1000;
+                //extra roll
             }
         }
-        Debug.Log(points);
-        points = 0;
     }
 
-    private string ParseToString(List<Dice> dices)
+    private int[] CountEachDiceState(List<Dice> dices)
     {
-        dices.Sort((x, y) => x.CurrentState.CompareTo(y.CurrentState));
-        string combinationString = "";
-        foreach (var item in dices)
+        int[] countsOfEachDiceState = new int[6]; //кол-во каждой из выпавших сторон
+        int stateIndex;
+        foreach (var dice in dices)
         {
-            int intState = (int)item.CurrentState + 1;
-            combinationString += intState.ToString();
-            combinationString += "*";
+            stateIndex = (int)dice.CurrentState;
+            countsOfEachDiceState[stateIndex]++;
         }
-
-        return combinationString;
-    }
-
-    private string ReplaceFirst(string text, string search, string replace)
-    {
-        int pos = text.IndexOf(search);
-        if (pos < 0)
-        {
-            return text;
-        }
-        return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+        return countsOfEachDiceState;
     }
 }

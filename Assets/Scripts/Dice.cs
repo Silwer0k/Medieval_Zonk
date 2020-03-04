@@ -28,4 +28,9 @@ public class Dice : MonoBehaviour
 		_currentState = (DiceState)diceValues.GetValue(Random.Range(0, diceValues.Length));
 		_diceRender.RenderDiceSprite((int)_currentState);
 	}
+
+	private void OnValidate()
+	{
+		_diceRender.RenderDiceSprite((int)_currentState);
+	}
 }
