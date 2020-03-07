@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class DiceSelecting : MonoBehaviour
     private List<Dice> _selectedDices = new List<Dice>();
     private Transform _currentSelectedDice;
     private int _currentSelectedDiceIndex;
+    private bool selectAll = false;
 
     private void Start()
     {
@@ -25,10 +27,38 @@ public class DiceSelecting : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
             SelectNextDice(false);
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return))
-            ChangeDiceCombination();
+            AddDiceToCombination();
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            selectAll = !selectAll;
+            SelectUnselectAllDices(selectAll);
+        }  
     }
 
-    private void ChangeDiceCombination()
+    //TO DO REFACTORING
+    private void SelectUnselectAllDices(bool state)
+    {
+        foreach (var dice in _heap)
+        {
+            var CombinationCircleRenderer = dice.GetChild(0).GetComponent<SpriteRenderer>();
+            if (state)
+            {
+                if (!CombinationCircleRenderer.enabled)
+                {
+                    _selectedDices.Add(dice.GetComponent<Dice>());
+                    CombinationCircleRenderer.enabled = true;
+                }
+            }else if (CombinationCircleRenderer.enabled)
+            {
+                _selectedDices.Remove(dice.GetComponent<Dice>());
+                CombinationCircleRenderer.enabled = false;
+            }
+        }
+        _possibleCombinations.CheckCombinations(_selectedDices);
+    }
+
+    //TO DO REFACTORING
+    private void AddDiceToCombination()
     {
         var CombinationCircleRenderer = _currentSelectedDice.GetChild(0).GetComponent<SpriteRenderer>();
         if (!CombinationCircleRenderer.enabled)
