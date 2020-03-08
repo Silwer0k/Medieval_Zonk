@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DiceHeap : MonoBehaviour
 {
+    [SerializeField] private DiceSelecting _diceSelectingComponent;
+
     [SerializeField] private Dice[] _heap;
     [SerializeField] private float _heapRadius;
     [SerializeField] private float _minDistanceBeetweenDices;
@@ -18,7 +20,10 @@ public class DiceHeap : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
+        {
             HeapRoll();
+            _diceSelectingComponent.PickAllDices(false);
+        }
     }
 
     public void HeapRoll()
