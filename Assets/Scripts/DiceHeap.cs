@@ -7,8 +7,8 @@ public class DiceHeap : MonoBehaviour
     [SerializeField] private DiceSelecting _diceSelectingComponent;
 
     [SerializeField] private Dice[] _heap;
-    [SerializeField] private float _heapRadius;
-    [SerializeField] private float _minDistanceBeetweenDices;
+    [Range(0f,1f)] [SerializeField] private float _heapRadius;
+    [Range(0f,.3f)] [SerializeField] private float _minDistanceBeetweenDices;
 
     private List<Vector2> _verifiedPositions = new List<Vector2>();
 
@@ -54,7 +54,6 @@ public class DiceHeap : MonoBehaviour
         {
             for (int i = 0; i < _verifiedPositions.Count; i++)
             {
-                //заменить _minDistanceBeetweenDices на размер спрайта
                 while (Vector2.Distance(_verifiedPositions[i], randomPosition) < _minDistanceBeetweenDices)
                 {
                     randomPosition = GetRandomPositionInCircle();

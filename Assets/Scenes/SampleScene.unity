@@ -427,7 +427,7 @@ MonoBehaviour:
   - {fileID: 1368944755}
   - {fileID: 1234285482}
   - {fileID: 258827758}
-  _heapRadius: 0.5
+  _heapRadius: 1
   _minDistanceBeetweenDices: 0.3
 --- !u!4 &899265064
 Transform:
