@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class DiceSelecting : MonoBehaviour
 {
-    [SerializeField] private Combinations _combinations;
-    [SerializeField] private Transform[] _heap;
-    [SerializeField] private float _nearnessRadius;
+    [SerializeField] private Combinations _combinations = null;
+    [SerializeField] private Transform[] _heap = null;
+    [SerializeField] private float _nearnessRadius = 0f;
 
-    private List<Dice> _selectedDices = new List<Dice>();
+    private List<Dice> _pickedDices = new List<Dice>();
     private Transform _currentSelectedDice;
     private int _currentSelectedDiceIndex;
     private bool _pickAll = true;
@@ -55,37 +55,28 @@ public class DiceSelecting : MonoBehaviour
             {
                 if (!CombinationCircleRenderer.enabled)
                 {
-                    _selectedDices.Add(dice.GetComponent<Dice>());
+                    _pickedDices.Add(dice.GetComponent<Dice>());
                     CombinationCircleRenderer.enabled = true;
                 }
             }else if (CombinationCircleRenderer.enabled)
             {
-                _selectedDices.Remove(dice.GetComponent<Dice>());
+                _pickedDices.Remove(dice.GetComponent<Dice>());
                 CombinationCircleRenderer.enabled = false;
             }
         }
         _pickAll = !_pickAll;
-        _combinations.CheckCombinations(_selectedDices);
+        _combinations.CheckCombinations(_pickedDices);
     }
 
     private void PickDice(Transform dice)
     {
         var CombinationCircleRenderer = dice.GetChild(0).GetComponent<SpriteRenderer>();
         if (!CombinationCircleRenderer.enabled)
-            _selectedDices.Add(dice.GetComponent<Dice>());
+            _pickedDices.Add(dice.GetComponent<Dice>());
         else
-            _selectedDices.Remove(dice.GetComponent<Dice>());
+            _pickedDices.Remove(dice.GetComponent<Dice>());
         CombinationCircleRenderer.enabled = !CombinationCircleRenderer.enabled;
-        _combinations.CheckCombinations(_selectedDices);
-    }
-
-    private void SelectNextDice(bool up)
-    {
-        if(up)
-            _currentSelectedDiceIndex = (_currentSelectedDiceIndex == 0) ? _heap.Length - 1 : --_currentSelectedDiceIndex;
-        else
-            _currentSelectedDiceIndex = (_currentSelectedDiceIndex >= _heap.Length - 1) ? 0 : ++_currentSelectedDiceIndex;
-        SelectDice(_heap[_currentSelectedDiceIndex]);
+        _combinations.CheckCombinations(_pickedDices);
     }
 
     private void SelectNextDice(Transform currentSelectedDice, Sectors sector)
@@ -96,10 +87,6 @@ public class DiceSelecting : MonoBehaviour
         {
             if (dice != currentSelectedDice)
             {
-                if (nextDice == null)
-                {
-                    nextDice = dice;
-                }
                 if (IsInSector(dice.position, currentSelectedDice.position, _nearnessRadius, sector))
                 {
                     if(Vector2.Distance(currentSelectedDice.position, dice.position) < distance)
@@ -115,6 +102,8 @@ public class DiceSelecting : MonoBehaviour
 
     private void SelectDice(Transform dice)
     {
+        if (dice == null)
+            return;
         _currentSelectedDice.GetChild(1).GetComponent<SpriteRenderer>().enabled = false;
         dice.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
         _currentSelectedDice = dice;
@@ -125,14 +114,12 @@ public class DiceSelecting : MonoBehaviour
         Vector2 diceOffset = GetOffset(dicePosition, currentSelectedDicePos);
         double polarAngle = Mathf.Atan2(diceOffset.y, diceOffset.x);
         double polarRadius = Math.Sqrt(Math.Pow(diceOffset.x, 2) + Math.Pow(diceOffset.y, 2));
-        if (polarRadius > radius)
-        {
-            return false;
-        }
+
+        if (polarRadius > radius) return false;
         switch (sector)
         {
             case Sectors.Upper:
-                if (polarAngle >= Mathf.Atan2(radius, radius) && polarRadius <= Mathf.Atan2(radius, -radius)) return true;
+                if (Mathf.Atan2(radius, radius) < polarAngle && Mathf.Atan2(radius, -radius) >= polarAngle) return true;
                 break;
             case Sectors.Left:
                 if ((polarAngle >= Mathf.Atan2(radius, -radius) && polarRadius <= Math.PI) || (polarAngle >= -Math.PI && polarAngle <= Mathf.Atan2(-radius, -radius))) return true;
@@ -141,7 +128,7 @@ public class DiceSelecting : MonoBehaviour
                 if (Mathf.Atan2(-radius, -radius) <= polarAngle && polarAngle <= Mathf.Atan2(-radius, radius)) return true;
                 break;
             case Sectors.Right:
-                if ((polarAngle >= Mathf.Atan2(-radius, radius) && polarRadius <= 0) || (polarAngle >= 0 && polarAngle <= Mathf.Atan2(radius, radius))) return true;
+                if (Mathf.Atan2(-radius, radius) <= polarAngle && polarAngle <= 0 || polarAngle >= 0 && polarAngle <= Mathf.Atan2(radius, radius)) return true;
                 break;
         }
         return false;

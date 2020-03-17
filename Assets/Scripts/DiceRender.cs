@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DiceRender : MonoBehaviour
 {
-    [SerializeField] private Sprite[] _diceSptires;
-    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private Sprite[] _diceSptires = null;
+    [SerializeField] private SpriteRenderer _spriteRenderer = null;
 
     public void RenderDiceSprite(int diceState)
     {

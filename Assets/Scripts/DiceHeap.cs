@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class DiceHeap : MonoBehaviour
 {
-    [SerializeField] private DiceSelecting _diceSelectingComponent;
+    [SerializeField] private DiceSelecting _diceSelectingComponent = null;
 
-    [SerializeField] private Dice[] _heap;
-    [Range(0f,1f)] [SerializeField] private float _heapRadius;
-    [Range(0f,.3f)] [SerializeField] private float _minDistanceBeetweenDices;
+    [SerializeField] private Dice[] _heap = null;
+    [Range(0f,1f)] [SerializeField] private float _heapRadius = 0;
+    [Range(0f,.3f)] [SerializeField] private float _minDistanceBeetweenDices = 0f;
 
     private List<Vector2> _verifiedPositions = new List<Vector2>();
 

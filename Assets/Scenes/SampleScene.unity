@@ -428,7 +428,7 @@ MonoBehaviour:
   - {fileID: 1234285482}
   - {fileID: 258827758}
   _heapRadius: 0.58
-  _minDistanceBeetweenDices: 0.259
+  _minDistanceBeetweenDices: 0.281
 --- !u!4 &899265064
 Transform:
   m_ObjectHideFlags: 0

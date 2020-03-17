@@ -8,7 +8,7 @@ public class Dice : MonoBehaviour
 	{
 		One, Two, Three, Four, Five, Six
 	}
-	[SerializeField] private DiceRender _diceRender;
+	[SerializeField] private DiceRender _diceRender = null;
 	[SerializeField] private DiceState _currentState = DiceState.One;
 	public DiceState CurrentState { 
 		get
